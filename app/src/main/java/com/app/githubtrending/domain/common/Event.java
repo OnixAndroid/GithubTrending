@@ -1,4 +1,4 @@
-package com.app.githubtrending.ui.common;
+package com.app.githubtrending.domain.common;
 
 public class Event<T> {
 

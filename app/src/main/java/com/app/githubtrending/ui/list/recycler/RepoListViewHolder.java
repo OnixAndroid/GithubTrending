@@ -3,7 +3,7 @@ package com.app.githubtrending.ui.list.recycler;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.githubtrending.databinding.ListItemBinding;
-import com.app.githubtrending.ui.model.Repo;
+import com.app.githubtrending.ui.model.RepoItem;
 
 import coil.Coil;
 import coil.ImageLoader;
@@ -24,13 +24,13 @@ public class RepoListViewHolder extends RecyclerView.ViewHolder {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void bind(Repo repo) {
-        binding.repoName.setText(repo.getRepoName());
-        binding.username.setText(repo.getUsername());
-        binding.description.setText(repo.getDescription());
-        binding.starsCount.setText(String.valueOf(repo.getStarsCount()));
-        bindImage(repo.getRepoImageUrl());
-        binding.listItem.setOnClickListener(view -> onItemClickListener.onItemClick(repo.getId()));
+    public void bind(RepoItem repoItem) {
+        binding.repoName.setText(repoItem.getRepoName());
+        binding.username.setText(repoItem.getUsername());
+        binding.description.setText(repoItem.getDescription());
+        binding.starsCount.setText(String.valueOf(repoItem.getStarsCount()));
+        bindImage(repoItem.getRepoImageUrl());
+        binding.listItem.setOnClickListener(view -> onItemClickListener.onItemClick(repoItem.getId()));
     }
 
     private void bindImage(String imageUrl) {
@@ -43,4 +43,8 @@ public class RepoListViewHolder extends RecyclerView.ViewHolder {
                 .build();
         imageLoader.enqueue(request);
     }
+
+
+    public static final int TYPE_ITEM = 0;
+    public static final int TYPE_LOADER = 1;
 }

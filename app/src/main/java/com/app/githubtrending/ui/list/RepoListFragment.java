@@ -14,11 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.app.githubtrending.R;
 import com.app.githubtrending.databinding.FragmentListBinding;
 import com.app.githubtrending.ui.details.DetailsFragment;
+import com.app.githubtrending.ui.list.recycler.RecyclerViewPaginator;
 import com.app.githubtrending.ui.list.recycler.RepoListAdapter;
 import com.app.githubtrending.ui.list.recycler.RepoListViewHolder;
 import com.app.githubtrending.ui.list.recycler.SpaceBetweenDecoration;
+import com.app.githubtrending.ui.model.Repo;
 import com.app.githubtrending.ui.navigator.MainNavigator;
 import com.app.githubtrending.ui.navigator.Router;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -34,8 +39,10 @@ public class RepoListFragment extends Fragment {
 
         setBindingData();
         setupRepoListObserver();
+        setupScreenStateObserver();
         setupNavigationObserver();
         vm.getTrendingRepos();
+        setupPagination();
 
         return binding.getRoot();
     }
@@ -84,9 +91,22 @@ public class RepoListFragment extends Fragment {
 
     private void setupRepoListObserver() {
         vm.repo.observe(getViewLifecycleOwner(), repoList -> {
+            List<Repo> repoRecyclerModelList = repoList.stream().map(data -> (Repo) data ).collect(Collectors.toList());
+
             if (binding.reposList.getAdapter() instanceof RepoListAdapter) {
-                ((RepoListAdapter) binding.reposList.getAdapter()).submitList(repoList);
+                ((RepoListAdapter) binding.reposList.getAdapter()).submitList(repoRecyclerModelList);
             }
+        });
+    }
+
+    private void setupScreenStateObserver() {
+        vm.state.observe(getViewLifecycleOwner(), state -> {
+//            if (state.isLoading()) {
+//                binding.circularProgressBar.setVisibility(View.VISIBLE);
+//            } else {
+//                binding.circularProgressBar.setVisibility(View.GONE);
+//            }
+
         });
     }
 
@@ -105,5 +125,33 @@ public class RepoListFragment extends Fragment {
                 ((MainNavigator) requireActivity()).subNavigateTo(DetailsFragment.newInstance(id));
             }
         });
+    }
+
+
+    private void setupPagination() {
+
+        RecyclerViewPaginator recyclerViewPaginator = new RecyclerViewPaginator(binding.reposList) {
+            @Override
+            public boolean isLastPage() {
+                return !vm.state.getValue().hasNextPage();
+            }
+
+            @Override
+            public void loadMore(Long start, Long count) {
+                vm.getTrendingRepos();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return vm.state.getValue().isLoading();
+            }
+        };
+
+        binding.reposList.addOnScrollListener(recyclerViewPaginator);
+
+    }
+
+     public static void addAnimation(Fragment fragment){
+
     }
 }
