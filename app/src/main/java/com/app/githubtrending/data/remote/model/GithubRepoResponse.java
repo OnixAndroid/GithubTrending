@@ -1,4 +1,4 @@
-package com.app.githubtrending.data.model;
+package com.app.githubtrending.data.remote.model;
 
 import com.google.gson.annotations.SerializedName;
 

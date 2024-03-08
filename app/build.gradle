@@ -51,4 +51,9 @@ dependencies {
     implementation libs.rxjava
     implementation libs.rxandroid
     implementation libs.adapter.rxjava3
+    implementation libs.viewpager
+    implementation libs.room.runtime
+    annotationProcessor libs.androidx.room.compiler
+    implementation libs.androidx.room.rxjava3
+    implementation libs.androidx.swiperefreshlayout
 }

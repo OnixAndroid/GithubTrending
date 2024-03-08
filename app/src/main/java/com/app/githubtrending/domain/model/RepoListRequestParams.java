@@ -7,13 +7,15 @@ public class RepoListRequestParams {
     private final int page;
     private final String sort;
     private final String order;
+    private final Filter filter;
 
-    public RepoListRequestParams(String searchQuery, int perPage, int page, String sort, String order) {
+    public RepoListRequestParams(String searchQuery, int perPage, int page, String sort, String order, Filter filter) {
         this.searchQuery = searchQuery;
         this.page = page;
         this.perPage = perPage;
         this.sort = sort;
         this.order = order;
+        this.filter = filter;
     }
 
     public String getSearchQuery() {
@@ -34,5 +36,9 @@ public class RepoListRequestParams {
 
     public String getOrder() {
         return order;
+    }
+
+    public Filter getFilter() {
+        return filter;
     }
 }

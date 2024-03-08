@@ -1,18 +1,12 @@
-package com.app.githubtrending.data.model;
+package com.app.githubtrending.data.remote.model;
 
 import com.app.githubtrending.ui.model.RepoDetailed;
-import com.app.githubtrending.ui.model.RepoItem;
 import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DetailsResponse {
-
-
-    public RepoItem toRepo() {
-        return new RepoItem(this.id, this.owner.getLogin(), this.name, this.owner.getAvatarurl(), this.description, this.stargazersCount);
-    }
 
     public RepoDetailed toRepoDetailed() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX");

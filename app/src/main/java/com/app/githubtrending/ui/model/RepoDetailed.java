@@ -2,7 +2,7 @@ package com.app.githubtrending.ui.model;
 
 import java.time.LocalDateTime;
 
-public class RepoDetailed {
+public class RepoDetailed implements Repo {
 
     public RepoDetailed(
             long id,

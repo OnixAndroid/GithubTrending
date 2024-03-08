@@ -15,7 +15,7 @@ import com.app.githubtrending.R;
 import com.app.githubtrending.databinding.ListItemBinding;
 import com.app.githubtrending.databinding.LoaderItemBinding;
 import com.app.githubtrending.ui.model.Repo;
-import com.app.githubtrending.ui.model.RepoItem;
+import com.app.githubtrending.ui.model.RepoDetailed;
 
 public class RepoListAdapter extends ListAdapter<Repo, RecyclerView.ViewHolder> {
 
@@ -55,7 +55,7 @@ public class RepoListAdapter extends ListAdapter<Repo, RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder.getItemViewType() == TYPE_ITEM) {
-            RepoItem repoItem = ((RepoItem) getItem(position));
+            RepoDetailed repoItem = ((RepoDetailed) getItem(position));
             ((RepoListViewHolder) holder).bind(repoItem);
         }
     }

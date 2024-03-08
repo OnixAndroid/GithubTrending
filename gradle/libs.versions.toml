@@ -14,8 +14,12 @@ hiltAndroid = "2.48"
 retrofit = "2.9.0"
 rxandroid = "3.0.2"
 rxjava = "3.1.5"
+swiperefreshlayout = "1.1.0"
+viewpager = "1.1.0-alpha01"
+room = "2.6.1"
 
 [libraries]
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
@@ -33,6 +37,10 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
+viewpager = { module = "androidx.viewpager:viewpager", version.ref = "viewpager" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "room" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

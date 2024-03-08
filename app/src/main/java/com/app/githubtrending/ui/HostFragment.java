@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.app.githubtrending.R;
 import com.app.githubtrending.databinding.FragmentHostBinding;
-import com.app.githubtrending.ui.list.RepoListFragment;
+import com.app.githubtrending.ui.list.pager.RepoListsPager;
 import com.app.githubtrending.ui.navigator.MainNavigator;
 import com.app.githubtrending.ui.navigator.SubNavigator;
 
@@ -31,7 +31,7 @@ public class HostFragment extends Fragment implements SubNavigator {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((MainNavigator) requireActivity()).navigateTo(new RepoListFragment());
+        ((MainNavigator) requireActivity()).navigateTo(new RepoListsPager());
 
         isLand = requireActivity().findViewById(R.id.fragment_container_details) != null;
     }

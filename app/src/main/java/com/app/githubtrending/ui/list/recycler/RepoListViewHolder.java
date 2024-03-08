@@ -2,8 +2,9 @@ package com.app.githubtrending.ui.list.recycler;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.githubtrending.R;
 import com.app.githubtrending.databinding.ListItemBinding;
-import com.app.githubtrending.ui.model.RepoItem;
+import com.app.githubtrending.ui.model.RepoDetailed;
 
 import coil.Coil;
 import coil.ImageLoader;
@@ -24,7 +25,7 @@ public class RepoListViewHolder extends RecyclerView.ViewHolder {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void bind(RepoItem repoItem) {
+    public void bind(RepoDetailed repoItem) {
         binding.repoName.setText(repoItem.getRepoName());
         binding.username.setText(repoItem.getUsername());
         binding.description.setText(repoItem.getDescription());
@@ -38,6 +39,8 @@ public class RepoListViewHolder extends RecyclerView.ViewHolder {
 
         ImageRequest request = new ImageRequest.Builder(itemView.getContext())
                 .data(imageUrl)
+                .placeholder(R.drawable.avatar_default)
+                .error(R.drawable.avatar_default)
                 .crossfade(true)
                 .target(binding.repoImage)
                 .build();

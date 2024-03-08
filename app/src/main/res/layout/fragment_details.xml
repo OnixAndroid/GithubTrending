@@ -8,19 +8,40 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         tools:context=".ui.details.DetailsFragment">
+
+        <FrameLayout
+            android:id="@+id/error_surface"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF2B2B"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/error_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:text="Error"
+                tools:visibility="visible" />
+
+        </FrameLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/repo_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginTop="@dimen/padding_medium"
+            tools:background="@drawable/avatar_default"
             android:foregroundGravity="center"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@+id/error_surface"/>
 
         <TextView
             android:id="@+id/username"
@@ -42,7 +63,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:paddingVertical="@dimen/padding_small"
+            android:padding="@dimen/padding_small"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,21 +87,21 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:padding="8dp"
+            android:layout_marginTop="@dimen/padding_medium"
+            android:paddingHorizontal="@dimen/padding_small"
             android:paddingStart="@dimen/padding_small"
             android:paddingEnd="@dimen/padding_small"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/star_icon"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/error_surface"
             tools:text="99999" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="@dimen/match_constraints"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
+            android:padding="@dimen/padding_small"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,15 +113,14 @@
             android:id="@+id/created_at"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Created at: "
+            android:text="@string/created_at"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
+            android:padding="@dimen/padding_small"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/repo_name"
-            tools:text="Created at: " />
+            tools:text="Created at:" />
 
         <TextView
             android:id="@+id/created_at_value"
@@ -110,6 +130,7 @@
             android:maxLines="2"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/created_at"
@@ -120,11 +141,10 @@
             android:id="@+id/language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Language: "
+            android:text="@string/language"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
+            android:padding="@dimen/padding_small"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/created_at_value"
@@ -138,6 +158,7 @@
             android:maxLines="2"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/language"
@@ -148,11 +169,10 @@
             android:id="@+id/forks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number of forks: "
+            android:text="@string/number_of_forks"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
+            android:padding="@dimen/padding_small"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -168,6 +188,7 @@
             android:maxLines="2"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -181,8 +202,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
+            android:padding="@dimen/padding_small"
             android:textSize="14sp"
             android:clickable="true"
             android:autoLink="web"
@@ -193,15 +213,27 @@
             tools:text="URL" />
 
         <ImageView
-            android:id="@+id/heartImageView"
+            android:id="@+id/favouriteImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
             android:clickable="true"
+            android:layout_marginTop="@dimen/padding_small"
             android:padding="@dimen/padding_small"
             android:src="@drawable/ic_heart_outlined"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/error_surface" />
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/favButton"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:background="#2D000000"-->
+<!--            android:clickable="true"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/favouriteImage"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/favouriteImage"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/favouriteImage"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/favouriteImage" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
