@@ -14,6 +14,7 @@ import com.app.githubtrending.databinding.FragmentDetailsBinding;
 import com.app.githubtrending.ui.model.RepoDetailed;
 import com.app.githubtrending.ui.navigator.MainNavigator;
 import com.app.githubtrending.ui.navigator.Router;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.time.format.DateTimeFormatter;
 
@@ -39,6 +40,8 @@ public class DetailsFragment extends Fragment {
 
     private DetailsViewModel vm;
 
+    private ShimmerFrameLayout shimmerLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDetailsBinding.inflate(inflater, container, false);
@@ -47,6 +50,9 @@ public class DetailsFragment extends Fragment {
         if (repoId == -1) {
             throw new IllegalArgumentException("Repo ID arg is missing.");
         }
+
+        shimmerLayout = binding.shimmer.shimmerLayout;
+        shimmerLayout.startShimmer();
 
         vm = new ViewModelProvider(this).get(DetailsViewModel.class);
 
@@ -85,11 +91,11 @@ public class DetailsFragment extends Fragment {
     }
 
     private void setupRepoObserver() {
-        vm.state.observe(getViewLifecycleOwner(), repo -> {
-            if (repo == null) {
+        vm.state.observe(getViewLifecycleOwner(), state -> {
+            if (state == null) {
                 return;
             }
-            setBindingData(repo);
+            setBindingData(state);
         });
     }
 
@@ -114,6 +120,8 @@ public class DetailsFragment extends Fragment {
         }
 
         if (repo == null) return;
+        shimmerLayout.stopShimmer();
+        shimmerLayout.setVisibility(View.GONE);
 
         bindImage(repo.getRepoImageUrl());
         binding.repoName.setText(repo.getRepoName());
