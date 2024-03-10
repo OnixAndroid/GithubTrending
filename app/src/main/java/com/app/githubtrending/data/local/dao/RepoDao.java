@@ -38,4 +38,7 @@ public interface RepoDao {
 
     @Query("SELECT EXISTS (SELECT 1 FROM " + TABLE_NAME + " WHERE id = :id LIMIT 1)")
     Single<Boolean> isExists(long id);
+
+    @Query("SELECT COUNT(*) FROM " + TABLE_NAME)
+    Single<Long> getCount();
 }

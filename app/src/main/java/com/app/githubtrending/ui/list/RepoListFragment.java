@@ -158,6 +158,12 @@ public class RepoListFragment extends Fragment {
         vm.state.observe(getViewLifecycleOwner(), state -> {
             if (binding.reposList.getAdapter() instanceof RepoListAdapter) {
                 ((RepoListAdapter) binding.reposList.getAdapter()).submitList(state.getList());
+
+                if (vm instanceof FavouritesViewModel) {
+                    FavouritesViewModel favouritesViewModel = (FavouritesViewModel) vm;
+
+                    favouritesViewModel.handleNextPage();
+                }
             }
 
             if (state.getList().isEmpty() && !state.isRefreshing()) {

@@ -25,4 +25,6 @@ public interface Repository {
     Completable deleteFromFavourite(long id);
 
     Single<Boolean> isFavourite(long id);
+
+    Single<Long> getCount();
 }

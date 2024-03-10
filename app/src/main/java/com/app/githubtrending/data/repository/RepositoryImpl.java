@@ -116,6 +116,11 @@ public class RepositoryImpl implements Repository {
         return localSource.isExists(id);
     }
 
+    @Override
+    public Single<Long> getCount() {
+        return localSource.getCount();
+    }
+
     private String buildQuery(String query, Filter filter) {
         LocalDateTime createdFrom;
 

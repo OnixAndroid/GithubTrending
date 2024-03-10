@@ -61,10 +61,9 @@ public class FavouritesViewModel extends ListViewModel {
                             currentState.setDetailedList(data);
                             currentState.setLoading(false);
                             currentState.setCurrentPage(page);
-                            currentState.setHasNextPage(data.size() != state.getRepoList().size());
 
                             _state.setValue(currentState);
-                            addBottomLoader();
+                            handleNextPage();
                         },
                         this::handleError
                 );
@@ -107,12 +106,31 @@ public class FavouritesViewModel extends ListViewModel {
                             currentState.setDetailedList(data);
                             currentState.setRefreshing(false);
                             currentState.setCurrentPage(1);
-                            currentState.setHasNextPage(data.size() >= currentState.getItemsPerPage());
 
                             _state.setValue(currentState);
-                            addBottomLoader();
+                            handleNextPage();
                         },
                         this::handleError
                 );
     }
+
+    @SuppressLint("CheckResult")
+    void handleNextPage() {
+        repository.getCount()
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.main())
+                .subscribe(
+                        count -> {
+                            ListScreenState currentState = _state.getValue();
+                            currentState.setHasNextPage(currentState.getList().size() < count);
+
+                            if (currentState.getList().size() >= count) return;
+
+                            addBottomLoader();
+                            _state.setValue(currentState);
+                        },
+                        this::handleError
+                );
+    }
+
 }
