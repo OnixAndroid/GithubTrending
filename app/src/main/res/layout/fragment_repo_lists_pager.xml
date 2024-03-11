@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tab_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="#C8C8C8"/>
+        android:background="@color/divider"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"

@@ -13,6 +13,7 @@ import com.app.githubtrending.R;
 import com.app.githubtrending.databinding.FragmentHostBinding;
 import com.app.githubtrending.ui.list.pager.RepoListsPager;
 import com.app.githubtrending.ui.navigator.MainNavigator;
+import com.app.githubtrending.ui.navigator.SubFragment;
 import com.app.githubtrending.ui.navigator.SubNavigator;
 
 public class HostFragment extends Fragment implements SubNavigator {
@@ -31,9 +32,30 @@ public class HostFragment extends Fragment implements SubNavigator {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((MainNavigator) requireActivity()).navigateTo(new RepoListsPager());
-
         isLand = requireActivity().findViewById(R.id.fragment_container_details) != null;
+
+        FragmentManager fragmentManager = getChildFragmentManager();
+        int fragmentsCount = fragmentManager.getFragments().size();
+
+        if (fragmentsCount > 0) {
+            navigateOnRotate(fragmentsCount, fragmentManager);
+        } else {
+            ((MainNavigator) requireActivity()).navigateTo(new RepoListsPager());
+        }
+    }
+
+    private void navigateOnRotate(int fragmentsCount, FragmentManager fragmentManager) {
+        Fragment fragment = fragmentManager.getFragments().get(fragmentsCount - 1);
+
+        if (fragment instanceof SubFragment) {
+            fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            fragmentManager.executePendingTransactions();
+
+            ((MainNavigator) requireActivity()).subNavigateTo(fragment);
+        } else {
+            ((MainNavigator) requireActivity()).navigateTo(fragment);
+        }
     }
 
     @Override
@@ -47,7 +69,7 @@ public class HostFragment extends Fragment implements SubNavigator {
         if (isLand) {
             navigate(fragment, R.id.fragment_container_details);
         } else {
-            navigate(fragment, R.id.fragment_container_main);
+             navigate(fragment, R.id.fragment_container_main);
         }
     }
 
@@ -57,7 +79,7 @@ public class HostFragment extends Fragment implements SubNavigator {
 
         transaction.replace(container, fragment);
         transaction.setReorderingAllowed(true);
-        transaction.addToBackStack(null);
+        if (!isLand) transaction.addToBackStack(null);
 
         transaction.commit();
     }

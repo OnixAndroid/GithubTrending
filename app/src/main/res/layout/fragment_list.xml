@@ -47,7 +47,7 @@
         android:id="@+id/search_bar_underline"
         android:layout_width="@dimen/match_constraints"
         android:layout_height="1dp"
-        android:background="#BEBEBE"
+        android:background="@color/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_bar" />

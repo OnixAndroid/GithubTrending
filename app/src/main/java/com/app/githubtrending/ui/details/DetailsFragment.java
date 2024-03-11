@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.app.githubtrending.R;
@@ -14,6 +13,7 @@ import com.app.githubtrending.databinding.FragmentDetailsBinding;
 import com.app.githubtrending.ui.model.RepoDetailed;
 import com.app.githubtrending.ui.navigator.MainNavigator;
 import com.app.githubtrending.ui.navigator.Router;
+import com.app.githubtrending.ui.navigator.SubFragment;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.time.format.DateTimeFormatter;
@@ -24,7 +24,7 @@ import coil.request.ImageRequest;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends SubFragment {
 
     private static final String REPO_ID_KEY = "REPO_ID_KEY";
 
@@ -76,6 +76,12 @@ public class DetailsFragment extends Fragment {
                 ((MainNavigator) requireActivity()).back();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (vm != null) return;
     }
 
     private void setupErrorObserver() {

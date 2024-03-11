@@ -51,11 +51,6 @@ public class RepoListFragment extends Fragment {
     public static final int TYPE_FAVOURITES = 1;
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListBinding.inflate(inflater, container, false);
 
@@ -159,11 +154,11 @@ public class RepoListFragment extends Fragment {
             if (binding.reposList.getAdapter() instanceof RepoListAdapter) {
                 ((RepoListAdapter) binding.reposList.getAdapter()).submitList(state.getList());
 
-                if (vm instanceof FavouritesViewModel) {
-                    FavouritesViewModel favouritesViewModel = (FavouritesViewModel) vm;
-
-                    favouritesViewModel.handleNextPage();
-                }
+//                if (vm instanceof FavouritesViewModel) {
+//                    FavouritesViewModel favouritesViewModel = (FavouritesViewModel) vm;
+//
+//                    favouritesViewModel.handleNextPage();
+//                }
             }
 
             if (state.getList().isEmpty() && !state.isRefreshing()) {
