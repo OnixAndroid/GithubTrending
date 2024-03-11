@@ -1,6 +1,5 @@
 package com.app.githubtrending.data.local.dao;
 
-import static com.app.githubtrending.data.local.model.RepoEntity.CREATED_AT;
 import static com.app.githubtrending.data.local.model.RepoEntity.ID;
 import static com.app.githubtrending.data.local.model.RepoEntity.STARS_COUNT;
 import static com.app.githubtrending.data.local.model.RepoEntity.TABLE_NAME;
@@ -23,9 +22,6 @@ public interface RepoDao {
 
     @Query("SELECT * FROM " + TABLE_NAME + " ORDER BY " + STARS_COUNT + " DESC LIMIT :perPage")
     Flowable<List<RepoEntity>> getFavourites(int perPage);
-
-    @Query("SELECT * FROM " + TABLE_NAME + " WHERE " + CREATED_AT + " >= :fromDateTime")
-    List<RepoEntity> findFromDate(String fromDateTime);
 
     @Upsert
     Completable insertAll(RepoEntity... entity);

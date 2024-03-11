@@ -19,5 +19,5 @@ class OwnerResponse {
 
     public String getLogin() { return login; }
 
-    public String getAvatarurl() { return avatarUrl; }
+    public String getAvatarUrl() { return avatarUrl; }
 }

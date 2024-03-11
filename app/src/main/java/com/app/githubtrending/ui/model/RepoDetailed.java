@@ -32,15 +32,15 @@ public class RepoDetailed implements Repo {
 
     private final int starsCount;
 
-    private String repoName;
+    private final String repoName;
 
-    private String username;
-    private String repoImageUrl;
-    private String description;
-    private String repoUrl;
-    private LocalDateTime createdAt;
-    private long forksCount;
-    private String language;
+    private final String username;
+    private final String repoImageUrl;
+    private final String description;
+    private final String repoUrl;
+    private final LocalDateTime createdAt;
+    private final long forksCount;
+    private final String language;
 
     public long getId() {
         return id;
@@ -66,28 +66,12 @@ public class RepoDetailed implements Repo {
         return starsCount;
     }
 
-    public long getid() {
-        return id;
-    }
-
-    public void setDescription(String value) {
-        this.description = value;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime value) {
-        this.createdAt = value;
-    }
-
     public long getForksCount() {
         return forksCount;
-    }
-
-    public void setForksCount(long value) {
-        this.forksCount = value;
     }
 
     public String getRepoUrl() {
@@ -96,9 +80,5 @@ public class RepoDetailed implements Repo {
 
     public String getLanguage() {
         return language;
-    }
-
-    public void setLanguage(String value) {
-        this.language = value;
     }
 }

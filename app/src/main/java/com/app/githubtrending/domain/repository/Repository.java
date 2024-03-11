@@ -12,8 +12,6 @@ import io.reactivex.rxjava3.core.Single;
 
 public interface Repository {
 
-    public List<Boolean> getPopular();
-
     Single<List<RepoDetailed>> getTrending(RepoListRequestParams params);
 
     Maybe<RepoDetailed> getById(long id);

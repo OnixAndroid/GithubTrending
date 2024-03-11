@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SpaceBetweenDecoration extends RecyclerView.ItemDecoration {
@@ -15,7 +16,7 @@ public class SpaceBetweenDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(@NonNull Rect outRect, View view, RecyclerView parent, @NonNull RecyclerView.State state) {
         Context context = view.getContext();
         int spacePx = context.getResources().getDimensionPixelSize(dimenId);
 

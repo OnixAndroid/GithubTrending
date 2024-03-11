@@ -4,14 +4,13 @@ import android.annotation.SuppressLint;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import com.app.githubtrending.R;
 import com.app.githubtrending.domain.common.AppSchedulers;
 import com.app.githubtrending.domain.common.Event;
 import com.app.githubtrending.domain.model.Filter;
 import com.app.githubtrending.domain.repository.Repository;
+import com.app.githubtrending.ui.common.ErrorMessage;
 import com.app.githubtrending.ui.model.Repo;
 import com.app.githubtrending.ui.model.RepoLoader;
 import com.app.githubtrending.ui.navigator.Router;
@@ -30,14 +29,11 @@ import retrofit2.HttpException;
 
 abstract class ListViewModel extends ViewModel {
 
-    protected SavedStateHandle savedStateHandle;
-
     protected final Repository repository;
 
     protected final AppSchedulers schedulers;
 
-    ListViewModel(SavedStateHandle savedStateHandle, Repository repository, AppSchedulers schedulers) {
-        this.savedStateHandle = savedStateHandle;
+    ListViewModel(Repository repository, AppSchedulers schedulers) {
         this.repository = repository;
         this.schedulers = schedulers;
     }
@@ -48,15 +44,13 @@ abstract class ListViewModel extends ViewModel {
     protected final MutableLiveData<Event<Router>> _navigationEvents = new MutableLiveData<>();
     public final LiveData<Event<Router>> navigationEvents = _navigationEvents;
 
-    protected final MutableLiveData<Event<Integer>> _errorEvents = new MutableLiveData<>();
-    public final LiveData<Event<Integer>> errorEvents = _errorEvents;
-
     public void openDetails(long id) {
         _navigationEvents.setValue(new Event<>(new Router.Details(id)));
     }
 
     protected void hideLoader() {
         ListScreenState state = _state.getValue();
+        assert state != null;
         List<Repo> list = state.getRepoList().stream()
                 .map(item -> (Repo) item).collect(Collectors.toList());
         state.setList(list);
@@ -67,6 +61,7 @@ abstract class ListViewModel extends ViewModel {
 
     protected void setHasNextPage(boolean value) {
         ListScreenState state = _state.getValue();
+        assert state != null;
         state.setHasNextPage(value);
         _state.setValue(state);
     }
@@ -74,6 +69,7 @@ abstract class ListViewModel extends ViewModel {
     public void addBottomLoader() {
         ListScreenState state = _state.getValue();
 
+        assert state != null;
         ArrayList<Repo> repos = new ArrayList<>(state.getRepoList());
 
         if (!state.hasNextPage()) {
@@ -89,6 +85,7 @@ abstract class ListViewModel extends ViewModel {
 
     protected void showNoItemsMessage() {
         ListScreenState currentState = _state.getValue();
+        assert currentState != null;
         currentState.setList(List.of());
         _state.setValue(currentState);
     }
@@ -104,6 +101,7 @@ abstract class ListViewModel extends ViewModel {
                 .observeOn(schedulers.main())
                 .subscribe(query -> {
                     ListScreenState state = _state.getValue();
+                    assert state != null;
                     state.setSearchQuery(query);
                     state.setCurrentPage(0);
                     state.setList(List.of());
@@ -115,7 +113,7 @@ abstract class ListViewModel extends ViewModel {
 
 
     public void setSearchQuery(String query) {
-        if (Objects.equals(query, state.getValue().getSearchQuery())) {
+        if (Objects.equals(query, Objects.requireNonNull(state.getValue()).getSearchQuery())) {
             return;
         }
         searchQuery.onNext(query);
@@ -123,6 +121,7 @@ abstract class ListViewModel extends ViewModel {
 
     public void setFilter(Filter selectedFilter) {
         ListScreenState state = _state.getValue();
+        assert state != null;
         if (state.getSelectedFilter() == selectedFilter) {
             return;
         }
@@ -134,31 +133,29 @@ abstract class ListViewModel extends ViewModel {
         refresh();
     }
 
-
-    protected void handleError(Throwable throwable) {
-        hideLoader();
-
-        if (throwable instanceof HttpException) {
-            HttpException e = (HttpException) throwable;
+    void handleError(Throwable throwable) {
+        if (throwable instanceof HttpException e) {
             if (e.code() == 403) {
-                showError(R.string.api_request_limit_error);
+                showError(new ErrorMessage.ApiLimit());
             } else {
-                showError(R.string.http_error);
+                showError(new ErrorMessage.HttpError(e.code()));
             }
         } else {
-            showError(R.string.http_error);
+            showError(new ErrorMessage.UnknownError());
         }
     }
 
-    protected void showError(int stringRes) {
+    protected void showError(ErrorMessage errorMessage) {
         ListScreenState state = _state.getValue();
-        state.setErrorMessageRes(stringRes);
+        assert state != null;
+        state.setErrorMessage(errorMessage);
         _state.setValue(state);
     }
 
     protected void hideError() {
         ListScreenState state = _state.getValue();
-        state.setErrorMessageRes(0);
+        assert state != null;
+        state.setErrorMessage(new ErrorMessage.NoError());
         _state.setValue(state);
     }
 

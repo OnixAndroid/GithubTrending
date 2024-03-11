@@ -1,7 +1,6 @@
 package com.app.githubtrending.ui.details;
 
-import androidx.annotation.StringRes;
-
+import com.app.githubtrending.ui.common.ErrorMessage;
 import com.app.githubtrending.ui.model.RepoDetailed;
 
 public class DetailsScreenState {
@@ -9,8 +8,8 @@ public class DetailsScreenState {
     private boolean isFavourite = false;
 
     private RepoDetailed repo = null;
-    @StringRes
-    private int errorMessageRes = 0;
+
+    private ErrorMessage errorMessage = new ErrorMessage.NoError();
 
     public boolean isFavourite() {
         return isFavourite;
@@ -28,11 +27,11 @@ public class DetailsScreenState {
         this.repo = repo;
     }
 
-    public int getErrorMessageRes() {
-        return errorMessageRes;
+    public ErrorMessage getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setErrorMessageRes(@StringRes int errorMessageRes) {
-        this.errorMessageRes = errorMessageRes;
+    public void setErrorMessage(ErrorMessage errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

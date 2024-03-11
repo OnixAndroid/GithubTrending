@@ -17,7 +17,7 @@
             android:id="@+id/error_surface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FF2B2B"
+            android:background="@color/error_surface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,8 +36,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/repo_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
             android:layout_marginTop="@dimen/padding_medium"
             tools:background="@drawable/avatar_default"
             android:foregroundGravity="center"
@@ -53,8 +53,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:layout_marginVertical="@dimen/padding_small"
-            android:textAlignment="center"
-            android:textSize="18sp"
+            android:gravity="center"
+            android:textSize="@dimen/text_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/repo_image"
@@ -67,7 +67,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:layout_margin="@dimen/padding_small"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_medium"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
             android:paddingHorizontal="@dimen/padding_small"
             android:paddingStart="@dimen/padding_small"
             android:paddingEnd="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/star_icon"
             app:layout_constraintTop_toBottomOf="@+id/error_surface"
@@ -105,7 +105,7 @@
             android:layout_width="@dimen/match_constraints"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +120,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/repo_name"
             tools:text="Created at:" />
@@ -134,7 +134,7 @@
             android:layout_marginTop="@dimen/padding_small"
             android:layout_marginBottom="@dimen/padding_small"
             android:layout_marginRight="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/created_at"
             app:layout_constraintTop_toBottomOf="@+id/repo_name"
@@ -148,7 +148,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/created_at_value"
             tools:text="Language: " />
@@ -162,7 +162,7 @@
             android:layout_marginTop="@dimen/padding_small"
             android:layout_marginBottom="@dimen/padding_small"
             android:layout_marginRight="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/language"
             app:layout_constraintTop_toBottomOf="@+id/created_at_value"
@@ -176,7 +176,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -192,9 +192,8 @@
             android:layout_marginTop="@dimen/padding_small"
             android:layout_marginBottom="@dimen/padding_small"
             android:layout_marginRight="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/forks"
             app:layout_constraintTop_toBottomOf="@+id/language_value"
             tools:text="120" />
@@ -206,11 +205,10 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:layout_margin="@dimen/padding_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             android:clickable="true"
             android:autoLink="web"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/forks_value"
             tools:text="URL" />
@@ -225,18 +223,8 @@
             android:padding="@dimen/padding_small"
             android:src="@drawable/ic_heart_outlined"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/error_surface" />
-
-<!--        <FrameLayout-->
-<!--            android:id="@+id/favButton"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:background="#2D000000"-->
-<!--            android:clickable="true"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/favouriteImage"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/favouriteImage"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/favouriteImage"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/favouriteImage" />-->
+            app:layout_constraintTop_toBottomOf="@+id/error_surface"
+            android:contentDescription="@string/favourite_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

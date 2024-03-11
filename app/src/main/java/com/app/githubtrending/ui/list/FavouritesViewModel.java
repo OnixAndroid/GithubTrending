@@ -2,8 +2,6 @@ package com.app.githubtrending.ui.list;
 
 import android.annotation.SuppressLint;
 
-import androidx.lifecycle.SavedStateHandle;
-
 import com.app.githubtrending.domain.common.AppSchedulers;
 import com.app.githubtrending.domain.model.RepoListRequestParams;
 import com.app.githubtrending.domain.repository.Repository;
@@ -16,8 +14,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class FavouritesViewModel extends ListViewModel {
 
     @Inject
-    FavouritesViewModel(SavedStateHandle savedStateHandle, Repository repository, AppSchedulers schedulers) {
-        super(savedStateHandle, repository, schedulers);
+    FavouritesViewModel(Repository repository, AppSchedulers schedulers) {
+        super(repository, schedulers);
     }
 
     @Override
@@ -30,6 +28,7 @@ public class FavouritesViewModel extends ListViewModel {
     private void getFavouriteRepos() {
 
         ListScreenState state = _state.getValue();
+        assert state != null;
         int perPage = state.getItemsPerPage();
         int page = state.getCurrentPage() + 1;
 
@@ -74,6 +73,7 @@ public class FavouritesViewModel extends ListViewModel {
     public void refresh() {
 
         ListScreenState state = _state.getValue();
+        assert state != null;
         int perPage = state.getItemsPerPage();
         int page = 1;
 
@@ -122,6 +122,7 @@ public class FavouritesViewModel extends ListViewModel {
                 .subscribe(
                         count -> {
                             ListScreenState currentState = _state.getValue();
+                            assert currentState != null;
                             currentState.setHasNextPage(currentState.getList().size() < count);
 
                             if (currentState.getList().size() >= count) return;

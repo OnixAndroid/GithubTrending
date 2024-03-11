@@ -14,7 +14,7 @@ public class GithubApiClient {
         return githubApiService;
     }
 
-    private GithubApiService githubApiService;
+    private final GithubApiService githubApiService;
 
     public GithubApiClient() {
         Retrofit retrofit = new Retrofit.Builder()

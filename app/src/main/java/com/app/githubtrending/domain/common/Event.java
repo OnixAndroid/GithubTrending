@@ -17,8 +17,4 @@ public class Event<T> {
             return content;
         }
     }
-
-    public boolean hasBeenHandled() {
-        return hasBeenHandled;
-    }
 }

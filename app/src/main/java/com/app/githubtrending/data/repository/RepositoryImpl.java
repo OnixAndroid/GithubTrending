@@ -32,41 +32,9 @@ public class RepositoryImpl implements Repository {
         this.localSource = localSource;
     }
 
-    @Override
-    public List<Boolean> getPopular() {
-        return null;
-    }
-
 
     @Override
     public Single<List<RepoDetailed>> getTrending(RepoListRequestParams params) {
-
-
-//        List<RepoDetailed> list = new ArrayList<RepoDetailed>();
-//        String name = "Username";
-//        String newName = String.join(name, String.valueOf(params.getPage()));
-//        String repoName = "Repo Name";
-//
-//        for (long i = 1; i <= 20; i++) {
-//            String newRepoName = String.join(repoName, String.valueOf(params.getPage() * 20L + i));
-//
-//            list.add(new RepoDetailed(
-//                            params.getPage() * 20L + i,
-//                            newName,
-//                            newRepoName,
-//                            "https://cdn.icon-icons.com/icons2/640/PNG/512/android-robot-figure-avatar-brand_icon-icons.com_59128.png",
-//                            "Description",
-//                            100,
-//                            "https://test.com",
-//                            LocalDateTime.now(),
-//                            200,
-//                            "Kotlin"
-//                    )
-//            );
-//        }
-//
-//        return Single.just(list);
-
 
         return remoteSource.searchRepositories(
                         buildQuery(params.getSearchQuery(), params.getFilter()),
@@ -82,7 +50,7 @@ public class RepositoryImpl implements Repository {
     @Override
     public Maybe<RepoDetailed> getById(long id) {
         return localSource.getById(id)
-                .map(item -> item.toRepoDetailed())
+                .map(RepoEntity::toRepoDetailed)
                 .switchIfEmpty(
                         remoteSource.getById(id)
                                 .subscribeOn(Schedulers.io())

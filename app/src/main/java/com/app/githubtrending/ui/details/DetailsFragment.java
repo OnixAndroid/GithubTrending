@@ -4,15 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.app.githubtrending.R;
 import com.app.githubtrending.databinding.FragmentDetailsBinding;
+import com.app.githubtrending.ui.common.ErrorMessage;
 import com.app.githubtrending.ui.model.RepoDetailed;
-import com.app.githubtrending.ui.navigator.MainNavigator;
-import com.app.githubtrending.ui.navigator.Router;
 import com.app.githubtrending.ui.navigator.SubFragment;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -43,7 +42,7 @@ public class DetailsFragment extends SubFragment {
     private ShimmerFrameLayout shimmerLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDetailsBinding.inflate(inflater, container, false);
 
         long repoId = getArguments() != null ? getArguments().getLong(REPO_ID_KEY, -1) : -1;
@@ -56,46 +55,12 @@ public class DetailsFragment extends SubFragment {
 
         vm = new ViewModelProvider(this).get(DetailsViewModel.class);
 
-        setupNavigationObserver();
-        setupErrorObserver();
         setupRepoObserver();
         vm.loadRepoDetails(repoId);
         binding.favouriteImage.setOnClickListener(v -> vm.addToFavourites());
 
         return binding.getRoot();
     }
-
-    private void setupNavigationObserver() {
-        vm.navigationEvents.observe(requireActivity(), event -> {
-            Router screen = event.getContentIfNotHandled();
-            if (screen == null) {
-                return;
-            }
-
-            if (screen instanceof Router.PopularRepos) {
-                ((MainNavigator) requireActivity()).back();
-            }
-        });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (vm != null) return;
-    }
-
-    private void setupErrorObserver() {
-        vm.errorEvents.observe(getViewLifecycleOwner(), event -> {
-            Integer errorRes = event.getContentIfNotHandled();
-
-            if (errorRes == null) {
-                return;
-            }
-
-            Toast.makeText(requireContext(), getString(errorRes), Toast.LENGTH_SHORT).show();
-        });
-    }
-
     private void setupRepoObserver() {
         vm.state.observe(getViewLifecycleOwner(), state -> {
             if (state == null) {
@@ -116,18 +81,34 @@ public class DetailsFragment extends SubFragment {
             binding.favouriteImage.setImageResource(R.drawable.ic_heart_outlined);
         }
 
-        if (state.getErrorMessageRes() <= 0) {
+        if (state.getErrorMessage() instanceof ErrorMessage.NoError) {
             binding.errorSurface.setVisibility(View.GONE);
             binding.errorText.setVisibility(View.GONE);
         } else {
             binding.errorSurface.setVisibility(View.VISIBLE);
             binding.errorText.setVisibility(View.VISIBLE);
-            binding.errorText.setText(state.getErrorMessageRes());
+            String errorMessage;
+
+            if (state.getErrorMessage() instanceof ErrorMessage.HttpError message) {
+                errorMessage = getString(R.string.http_error_code, message.getCode());
+            } else if (state.getErrorMessage() instanceof ErrorMessage.ApiLimit) {
+                errorMessage = getString(R.string.api_request_limit_error);
+            } else {
+                errorMessage = getString(R.string.unknown_error_message);
+            }
+            binding.errorText.setText(errorMessage);
         }
 
         if (repo == null) return;
         shimmerLayout.stopShimmer();
         shimmerLayout.setVisibility(View.GONE);
+
+        if (repo.getLanguage() == null) {
+            binding.language.setVisibility(View.GONE);
+            binding.languageValue.setVisibility(View.GONE);
+        } else {
+            binding.languageValue.setText(repo.getLanguage());
+        }
 
         bindImage(repo.getRepoImageUrl());
         binding.repoName.setText(repo.getRepoName());
@@ -138,7 +119,6 @@ public class DetailsFragment extends SubFragment {
         String formattedString = repo.getCreatedAt().format(formatter);
         binding.createdAtValue.setText(formattedString);
 
-        binding.languageValue.setText(repo.getLanguage());
         binding.forksValue.setText(String.valueOf(repo.getForksCount()));
         binding.repoUrl.setText(repo.getRepoUrl());
         binding.description.setText(repo.getDescription());

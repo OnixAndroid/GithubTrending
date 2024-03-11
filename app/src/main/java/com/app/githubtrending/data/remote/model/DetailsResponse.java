@@ -17,7 +17,7 @@ public class DetailsResponse {
                 this.id,
                 this.owner.getLogin(),
                 this.name,
-                this.owner.getAvatarurl(),
+                this.owner.getAvatarUrl(),
                 this.description,
                 this.stargazersCount,
                 this.url,

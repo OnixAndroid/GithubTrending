@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="divider">#C8C8C8</color>
+    <color name="error_surface">#FF2B2B</color>
+    <color name="shimmer_color">#787878</color>
 </resources>

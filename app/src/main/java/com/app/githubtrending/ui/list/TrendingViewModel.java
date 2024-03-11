@@ -2,8 +2,6 @@ package com.app.githubtrending.ui.list;
 
 import android.annotation.SuppressLint;
 
-import androidx.lifecycle.SavedStateHandle;
-
 import com.app.githubtrending.domain.common.AppSchedulers;
 import com.app.githubtrending.domain.model.RepoListRequestParams;
 import com.app.githubtrending.domain.repository.Repository;
@@ -11,6 +9,7 @@ import com.app.githubtrending.ui.model.RepoDetailed;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -20,8 +19,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class TrendingViewModel extends ListViewModel {
 
     @Inject
-    TrendingViewModel(SavedStateHandle savedStateHandle, Repository repository, AppSchedulers schedulers) {
-        super(savedStateHandle, repository, schedulers);
+    TrendingViewModel(Repository repository, AppSchedulers schedulers) {
+        super(repository, schedulers);
     }
 
     @Override
@@ -34,6 +33,7 @@ public class TrendingViewModel extends ListViewModel {
     private void getTrendingRepos() {
 
         ListScreenState state = _state.getValue();
+        assert state != null;
         int perPage = state.getItemsPerPage();
         int page = state.getCurrentPage() + 1;
 
@@ -81,11 +81,12 @@ public class TrendingViewModel extends ListViewModel {
     }
 
     private void handleInputList(List<RepoDetailed> data) {
-        if(data == null && _state.getValue().getList().isEmpty()) {
+        if(data == null && Objects.requireNonNull(_state.getValue()).getList().isEmpty()) {
             showNoItemsMessage();
         }
 
-        if(data.isEmpty() && _state.getValue().getList().isEmpty()) {
+        assert data != null;
+        if(data.isEmpty() && Objects.requireNonNull(_state.getValue()).getList().isEmpty()) {
             showNoItemsMessage();
         }
     }
@@ -95,6 +96,7 @@ public class TrendingViewModel extends ListViewModel {
     public void refresh() {
 
         ListScreenState state = _state.getValue();
+        assert state != null;
         int perPage = state.getItemsPerPage();
         int page = 1;
 

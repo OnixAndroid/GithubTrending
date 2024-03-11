@@ -26,10 +26,9 @@ public class RepoListAdapter extends ListAdapter<Repo, RecyclerView.ViewHolder> 
         this.onItemClickListener = onItemClickListener;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-//        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         switch (viewType) {
             case TYPE_ITEM:
@@ -46,10 +45,6 @@ public class RepoListAdapter extends ListAdapter<Repo, RecyclerView.ViewHolder> 
                 throw new RuntimeException("There is no type that matches the type " + viewType +
                         " + make sure you are using types correctly");
         }
-
-//        View itemListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-//        ListItemBinding itemListBinding = ListItemBinding.bind(itemListView);
-//        return new RepoListViewHolder(itemListBinding, onItemClickListener);
     }
 
     @Override
@@ -68,10 +63,4 @@ public class RepoListAdapter extends ListAdapter<Repo, RecyclerView.ViewHolder> 
             return TYPE_LOADER;
         }
     }
-
-    //    @Override
-//    public void onBindViewHolder(RepoListViewHolder holder, int position) {
-//        Repo repo = getItem(position);
-//        holder.bind(repo);
-//    }
 }

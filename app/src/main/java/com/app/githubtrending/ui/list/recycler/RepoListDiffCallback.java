@@ -1,5 +1,6 @@
 package com.app.githubtrending.ui.list.recycler;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.app.githubtrending.ui.model.Repo;
@@ -14,7 +15,7 @@ public class RepoListDiffCallback extends DiffUtil.ItemCallback<Repo> {
     }
 
     @Override
-    public boolean areContentsTheSame(Repo oldItem, Repo newItem) {
+    public boolean areContentsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
         return Objects.equals(oldItem, newItem);
     }
 }

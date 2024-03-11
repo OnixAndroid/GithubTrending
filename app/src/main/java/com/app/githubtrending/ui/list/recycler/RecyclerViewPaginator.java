@@ -8,13 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class RecyclerViewPaginator extends RecyclerView.OnScrollListener {
 
-    private Long batchSize = 19l;
+    private Long currentPage = 0L;
 
-    private Long currentPage = 0l;
+    private final RecyclerView.LayoutManager layoutManager;
 
-    private Integer threshold = 2;
-
-    private RecyclerView.LayoutManager layoutManager;
     public RecyclerViewPaginator(RecyclerView recyclerView) {
         recyclerView.addOnScrollListener(this);
         this.layoutManager = recyclerView.getLayoutManager();
@@ -28,11 +25,11 @@ public abstract class RecyclerViewPaginator extends RecyclerView.OnScrollListene
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
 
-            int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();;
+            int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
 
             if(isLoading() || isLastPage()) return;
 
-            if ((visibleItemCount + lastVisibleItemPosition + threshold) >= totalItemCount) {
+            if ((visibleItemCount + lastVisibleItemPosition + THRESHOLD) >= totalItemCount) {
                 loadMore(getStartSize(), getMaxSize());
             }
         }
@@ -43,11 +40,7 @@ public abstract class RecyclerViewPaginator extends RecyclerView.OnScrollListene
     }
 
     public Long getMaxSize() {
-        return  currentPage + batchSize;
-    }
-
-    public void reset() {
-        currentPage = 0l;
+        return  currentPage + BATCH_SIZE;
     }
 
     @Override
@@ -57,6 +50,8 @@ public abstract class RecyclerViewPaginator extends RecyclerView.OnScrollListene
 
     public abstract boolean isLastPage();
     public abstract boolean isLoading();
-    public abstract boolean isRefreshing();
     public abstract void loadMore(Long start , Long count);
+
+    private static final long BATCH_SIZE = 19L;
+    private static final int THRESHOLD = 2;
 }

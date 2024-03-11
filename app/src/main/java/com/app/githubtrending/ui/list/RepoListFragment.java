@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.app.githubtrending.R;
 import com.app.githubtrending.databinding.FragmentListBinding;
 import com.app.githubtrending.domain.model.Filter;
+import com.app.githubtrending.ui.common.ErrorMessage;
 import com.app.githubtrending.ui.details.DetailsFragment;
 import com.app.githubtrending.ui.list.recycler.RecyclerViewPaginator;
 import com.app.githubtrending.ui.list.recycler.RepoListAdapter;
@@ -27,6 +29,7 @@ import com.app.githubtrending.ui.navigator.Router;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -51,9 +54,10 @@ public class RepoListFragment extends Fragment {
     public static final int TYPE_FAVOURITES = 1;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListBinding.inflate(inflater, container, false);
 
+        assert getArguments() != null;
         int listType = getArguments().getInt(TYPE_KEY);
         if (listType == TYPE_ALL) {
             vm = new ViewModelProvider(this).get(TrendingViewModel.class);
@@ -63,7 +67,7 @@ public class RepoListFragment extends Fragment {
             binding.filter.setVisibility(View.GONE);
         }
 
-        binding.searchBarText.setText(vm.state.getValue().getSearchQuery());
+        binding.searchBarText.setText(Objects.requireNonNull(vm.state.getValue()).getSearchQuery());
 
         setupLogger();
         setBindingData();
@@ -104,7 +108,7 @@ public class RepoListFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                return;
+                // Not need
             }
         });
     }
@@ -131,7 +135,7 @@ public class RepoListFragment extends Fragment {
     }
 
     private void setupSearchTextListener() {
-        binding.searchBar.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(binding.searchBar.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // Not needed
@@ -153,12 +157,6 @@ public class RepoListFragment extends Fragment {
         vm.state.observe(getViewLifecycleOwner(), state -> {
             if (binding.reposList.getAdapter() instanceof RepoListAdapter) {
                 ((RepoListAdapter) binding.reposList.getAdapter()).submitList(state.getList());
-
-//                if (vm instanceof FavouritesViewModel) {
-//                    FavouritesViewModel favouritesViewModel = (FavouritesViewModel) vm;
-//
-//                    favouritesViewModel.handleNextPage();
-//                }
             }
 
             if (state.getList().isEmpty() && !state.isRefreshing()) {
@@ -172,14 +170,22 @@ public class RepoListFragment extends Fragment {
                 binding.reposList.scrollToPosition(0);
             }
 
-            if (state.getErrorMessageRes() <= 0) {
+            if (state.getErrorMessage() instanceof ErrorMessage.NoError) {
                 binding.errorSurface.setVisibility(View.GONE);
                 binding.errorText.setVisibility(View.GONE);
-                binding.errorText.setText("");
             } else {
                 binding.errorSurface.setVisibility(View.VISIBLE);
                 binding.errorText.setVisibility(View.VISIBLE);
-                binding.errorText.setText(state.getErrorMessageRes());
+                String errorMessage;
+
+                if (state.getErrorMessage() instanceof ErrorMessage.HttpError message) {
+                    errorMessage = getString(R.string.http_error_code, message.getCode());
+                } else if (state.getErrorMessage() instanceof ErrorMessage.ApiLimit) {
+                    errorMessage = getString(R.string.api_request_limit_error);
+                } else {
+                    errorMessage = getString(R.string.unknown_error_message);
+                }
+                binding.errorText.setText(errorMessage);
             }
 
             if (!state.isRefreshing()) {
@@ -216,7 +222,7 @@ public class RepoListFragment extends Fragment {
         RecyclerViewPaginator recyclerViewPaginator = new RecyclerViewPaginator(binding.reposList) {
             @Override
             public boolean isLastPage() {
-                return !vm.state.getValue().hasNextPage();
+                return !Objects.requireNonNull(vm.state.getValue()).hasNextPage();
             }
 
             @Override
@@ -226,12 +232,7 @@ public class RepoListFragment extends Fragment {
 
             @Override
             public boolean isLoading() {
-                return vm.state.getValue().isLoading();
-            }
-
-            @Override
-            public boolean isRefreshing() {
-                return vm.state.getValue().isRefreshing() || binding.refresh.isRefreshing();
+                return Objects.requireNonNull(vm.state.getValue()).isLoading();
             }
         };
 

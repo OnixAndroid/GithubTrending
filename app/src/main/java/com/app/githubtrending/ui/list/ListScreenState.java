@@ -1,8 +1,7 @@
 package com.app.githubtrending.ui.list;
 
-import androidx.annotation.StringRes;
-
 import com.app.githubtrending.domain.model.Filter;
+import com.app.githubtrending.ui.common.ErrorMessage;
 import com.app.githubtrending.ui.model.Repo;
 import com.app.githubtrending.ui.model.RepoDetailed;
 
@@ -12,16 +11,13 @@ import java.util.stream.Collectors;
 public class ListScreenState {
     private List<Repo> list = List.of();
     private int currentPage = 0;
-    private final int itemsPerPage = 20;
     private boolean hasNextPage = true;
     private boolean isLoading = false;
     private boolean isRefreshing = true;
-    @StringRes
-    private int errorMessageRes = 0;
+    private ErrorMessage errorMessage = new ErrorMessage.NoError();
     private String searchQuery = "";
     private Filter selectedFilter = Filter.LastMonth;
-    private String sort = "stars";
-    private String order = "desc";
+    private static final int ITEMS_PER_PAGE = 20;
 
     public int getCurrentPage() {
         return currentPage;
@@ -48,7 +44,7 @@ public class ListScreenState {
     }
 
     public int getItemsPerPage() {
-        return itemsPerPage;
+        return ITEMS_PER_PAGE;
     }
 
     public List<Repo> getList() {
@@ -69,12 +65,12 @@ public class ListScreenState {
         this.list = list;
     }
 
-    public int getErrorMessageRes() {
-        return errorMessageRes;
+    public ErrorMessage getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setErrorMessageRes(@StringRes int errorMessageRes) {
-        this.errorMessageRes = errorMessageRes;
+    public void setErrorMessage(ErrorMessage errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public String getSearchQuery() {
@@ -94,11 +90,11 @@ public class ListScreenState {
     }
 
     public String getSort() {
-        return sort;
+        return "stars";
     }
 
     public String getOrder() {
-        return order;
+        return "desc";
     }
 
     public boolean isRefreshing() {
